@@ -22,7 +22,7 @@ private_subnet_cidrs = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
 
 # EKS Cluster
 cluster_name    = "raham-cluster-1"
-cluster_version = "1.33"
+cluster_version = "1.32"
 
 # EKS Managed Nodegroup
 nodegroup_name      = "raham-cluster-ng-1"
