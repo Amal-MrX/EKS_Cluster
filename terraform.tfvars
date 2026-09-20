@@ -11,7 +11,7 @@ project_name = "myEKS"
 bastion_ami_id           = "ami-0e35ddab05955cf57" # Ubuntu 22.04 LTS - ap-south-1
 bastion_instance_type    = "m7i-flex.large"
 bastion_root_volume_size = 30
-key_pair_name            = "myPair"      # must already exist in your AWS account
+key_pair_name            = "myPair"    # must already exist in your AWS account
 ssh_allowed_cidr         = "0.0.0.0/0" # restrict to your IP in production, e.g. "203.0.113.10/32"
 
 # Networking
