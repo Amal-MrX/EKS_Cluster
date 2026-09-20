@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket       = "my-eks-cluster-info>"
+    bucket       = "my-eks-cluster-info"
     key          = "eks/terraform.tfstate"
     region       = "ap-south-1"
     use_lockfile = true
