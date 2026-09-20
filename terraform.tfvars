@@ -25,7 +25,7 @@ cluster_name    = "myEKS-cluster-1"
 cluster_version = "1.32"
 
 # EKS Managed Nodegroup
-nodegroup_name      = "raham-cluster-ng-1"
+nodegroup_name      = "myEKS-cluster-ng-1"
 node_instance_types = ["t3.medium"] # t3.micro is too small for EKS worker nodes
 node_volume_size    = 20
 node_desired_size   = 3
