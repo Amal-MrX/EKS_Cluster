@@ -1,0 +1,58 @@
+name: 'Terraform Cleanup'
+
+on:
+   workflow_dispatch:
+   schedule:
+       - cron: '0 0 * * *'
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    environment: production
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      
+    - name: AWS ARN Check
+      run: |
+        if [ -z "${{ secrets.AWS_ROLE_ARN }}" ]; then echo "AWS_ROLE_ARN is EMPTY"; exit 1; else echo "AWS_ROLE_ARN is set"; fi
+    # - name: Show OIDC claims
+    #   run: |
+    #       TOKEN=$(curl -s -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+    #       "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com" | jq -r .value)
+    #       echo "$TOKEN" | cut -d. -f2 | base64 -d 2>/dev/null | jq '{sub, aud, repository, ref}'  
+    
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v3
+      with:
+       role-to-assume: ${{secrets.AWS_ROLE_ARN}}
+       aws-region: ap-south-1
+
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      run: terraform init
+
+    - name: Terraform Destroy
+      run: terraform plan -destroy -out=tfplan-destroy
+
+    - name: Terraform Applying Destroy
+      run: terraform plan -auto-approve tfplan-destroy
+
+      
