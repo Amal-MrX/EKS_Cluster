@@ -49,8 +49,8 @@ jobs:
     - name: Terraform Init
       run: terraform init
       
-    - name: statelock removal  
-      run: terraform force-unlock -force 931bc3ef-bda1-874f-6e91-9cf1979c3baa
+    # - name: statelock removal  
+    #   run: terraform force-unlock -force 931bc3ef-bda1-874f-6e91-9cf1979c3baa
 
     - name: Terraform Destroy
       run: terraform plan -destroy -out=tfplan-destroy
